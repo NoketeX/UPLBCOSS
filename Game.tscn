@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://fb77gi7vbdqy"]
+
+[ext_resource type="PackedScene" uid="uid://bji6qu62wael7" path="res://Chicken.tscn" id="1_henf1"]
+[ext_resource type="Script" path="res://Game.gd" id="1_uhvk5"]
+[ext_resource type="Script" path="res://Power.gd" id="2_wg05n"]
+
+[node name="Gameplay" type="Node2D"]
+script = ExtResource("1_uhvk5")
+
+[node name="Power" type="RichTextLabel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+scroll_active = false
+script = ExtResource("2_wg05n")
+
+[node name="Chicken" parent="." instance=ExtResource("1_henf1")]
+gravity = 980.0
+friction = 200.0
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
+
+[connection signal="change_state" from="Chicken" to="." method="_on_chicken_change_state"]
+[connection signal="power_change" from="Chicken" to="Power" method="_on_chicken_power_change"]
