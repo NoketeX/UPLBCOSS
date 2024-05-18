@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://fb77gi7vbdqy"]
+[gd_scene load_steps=5 format=3 uid="uid://fb77gi7vbdqy"]
 
 [ext_resource type="PackedScene" uid="uid://bji6qu62wael7" path="res://Chicken.tscn" id="1_henf1"]
 [ext_resource type="Script" path="res://Game.gd" id="1_uhvk5"]
 [ext_resource type="Script" path="res://Power.gd" id="2_wg05n"]
+[ext_resource type="PackedScene" uid="uid://bd43q3hpg5vci" path="res://Cow.tscn" id="4_gd24e"]
 
 [node name="Gameplay" type="Node2D"]
 script = ExtResource("1_uhvk5")
@@ -16,10 +17,12 @@ script = ExtResource("2_wg05n")
 [node name="Chicken" parent="." instance=ExtResource("1_henf1")]
 friction = 200.0
 
-[node name="Timer" type="Timer" parent="."]
-
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(3, 3)
+
+[node name="Cow" parent="." instance=ExtResource("4_gd24e")]
+position = Vector2(96, -1)
+mass = 0.5
 
 [connection signal="change_state" from="Chicken" to="." method="_on_chicken_change_state"]
 [connection signal="power_change" from="Chicken" to="Power" method="_on_chicken_power_change"]

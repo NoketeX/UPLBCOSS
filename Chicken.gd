@@ -3,7 +3,6 @@ extends CharacterBody2D
 ## Global Variables
 var angle: float = 0 
 var power: float = 0
-@export var friction: float
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -20,10 +19,16 @@ func _ready() -> void:
 	pass	
 
 func _physics_process(delta):
-	move_and_collide(velocity * delta)
+	move_and_slide()
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		if collision.get_collider() is RigidBody2D:
+			collision.get_collider().apply_central_impulse(-collision.get_normal() * 50)
+			
 	if(power < 25):
 		velocity = Vector2(0, 0)
 		power = 0
+	## lerp through at 0.005th of the line
 	velocity = Vector2(lerp(velocity.x, 0.00, 0.005), lerp(velocity.y, 0.00, 0.005))
 	power = lerp(power, 0.00, 0.05)												
 	power_change.emit(int(power))																																								
