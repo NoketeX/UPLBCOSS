@@ -4,6 +4,7 @@ enum {CHARGING, FLYING, IDLE}
 var PlayerState
 
 @onready var camera: Camera2D = $Camera2D
+@onready var chicken: CharacterBody2D = $Chicken
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -20,7 +21,10 @@ func _on_chicken_change_state(state):
 	match PlayerState:
 		CHARGING:
 			camera.zoom = Vector2(5, 5)
+			camera.position = chicken.position
 		FLYING: 
 			camera.zoom = Vector2(1, 1)
+			camera.position = Vector2(0,0)
 		IDLE: 
 			camera.zoom = Vector2(3, 3)
+			camera.position = chicken.position

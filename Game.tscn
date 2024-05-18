@@ -14,7 +14,6 @@ scroll_active = false
 script = ExtResource("2_wg05n")
 
 [node name="Chicken" parent="." instance=ExtResource("1_henf1")]
-gravity = 980.0
 friction = 200.0
 
 [node name="Timer" type="Timer" parent="."]

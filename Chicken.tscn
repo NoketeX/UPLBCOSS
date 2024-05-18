@@ -58,7 +58,6 @@ animations = [{
 
 [node name="Chicken" type="CharacterBody2D"]
 script = ExtResource("1_g0p2t")
-gravity = -280.0
 friction = 100.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

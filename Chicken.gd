@@ -3,7 +3,6 @@ extends CharacterBody2D
 ## Global Variables
 var angle: float = 0 
 var power: float = 0
-@export var gravity: float
 @export var friction: float
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -22,10 +21,13 @@ func _ready() -> void:
 
 func _physics_process(delta):
 	move_and_collide(velocity * delta)
-	velocity.x = velocity.x - friction * delta
-	velocity.y = velocity.y - ((friction * delta) + (gravity * delta)) * delta
-	pass
-	
+	if(power < 25):
+		velocity = Vector2(0, 0)
+		power = 0
+	velocity = Vector2(lerp(velocity.x, 0.00, 0.005), lerp(velocity.y, 0.00, 0.005))
+	power = lerp(power, 0.00, 0.05)												
+	power_change.emit(int(power))																																								
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta) -> void:
 	match State:
@@ -33,7 +35,7 @@ func _process(delta) -> void:
 			if Input.is_action_pressed("LMBClick"):
 				var mouse_pos: Vector2 = get_global_mouse_position()
 				var pos: Vector2 = Vector2(position.x, position.y)
-				# var angle: float = pos.angle_to_point(mouse_pos) * 180/PI * -1
+				var angle: float = pos.angle_to_point(mouse_pos) * 180/PI * -1
 
 				if(angle > 0 && angle <= 90):
 					sprite.flip_h = false
@@ -51,23 +53,21 @@ func _process(delta) -> void:
 					sprite.play("bombastic_side_eye")
 					print("lower left")
 				
-				power = power + (delta * 100)
+				power = power + (delta * 1000)
 				power_change.emit(int(power))
 				
 			if Input.is_action_just_released("LMBClick"):
 				angle = 0
-				var mouse_pos = get_local_mouse_position()
-				power = power * -1
-				velocity = Vector2(mouse_pos.x * power * delta, mouse_pos.y * power * delta)
-				power = 0
-				
+				var mouse_pos = get_local_mouse_position().normalized()
+				velocity = Vector2(position.x - mouse_pos.x * power, position.y - mouse_pos.y * power)
 				set_physics_process(true)
 				change_state.emit(FLYING)
 				State = FLYING
 				
 		FLYING:
-			if(velocity.x == 0 && velocity.y == 0):
+			if(velocity.x + velocity.y == 0):
 				change_state.emit(IDLE)
+				set_physics_process(false)
 				State = IDLE
 			
 		IDLE:
@@ -85,7 +85,4 @@ func _process(delta) -> void:
 			if Input.is_action_just_pressed("LEFT"):
 				sprite.flip_h = true
 				sprite.play("side")
-				
-
-
 	pass
