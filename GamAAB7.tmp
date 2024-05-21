@@ -808,4 +808,3 @@ layer_0/tile_data = PackedInt32Array(-1, 65536, 0, -65538, 65536, 0, -65539, 655
 
 [connection signal="change_state" from="Chicken" to="." method="_on_chicken_change_state"]
 [connection signal="power_change" from="Chicken" to="Power" method="_on_chicken_power_change"]
-[connection signal="power_change" from="Chicken" to="Cow" method="_on_chicken_power_change"]

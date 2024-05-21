@@ -19,18 +19,27 @@ func _ready() -> void:
 	pass	
 
 func _physics_process(delta):
-	move_and_slide()
-	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		if collision.get_collider() is RigidBody2D:
-			collision.get_collider().apply_central_impulse(-collision.get_normal() * 50)
-			
-	if(power < 25):
+	var collision_info = move_and_collide(velocity * delta)
+	var not_null = collision_info != null
+	if(not_null and collision_info.get_collider() is RigidBody2D):
+		collision_info.get_collider().apply_central_impulse(-collision_info.get_normal() * velocity.length())
+		velocity = -velocity
+	if(not_null and collision_info.get_collider() is TileMap):
+		# Compare Position
+		var normal = collision_info.get_normal()
+		if(normal.x == 1 or normal.x == -1):
+			velocity.x = -velocity.x
+		if(normal.y == 1 or normal.y == -1):
+			velocity.y = -velocity.y	
+	
+	if(power <= 10):
 		velocity = Vector2(0, 0)
 		power = 0
+		power_change.emit(int(power))
+		
 	## lerp through at 0.005th of the line
 	velocity = Vector2(lerp(velocity.x, 0.00, 0.005), lerp(velocity.y, 0.00, 0.005))
-	power = lerp(power, 0.00, 0.05)												
+	power = lerp(power, 0.00, 0.005)												
 	power_change.emit(int(power))																																								
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -64,13 +73,13 @@ func _process(delta) -> void:
 			if Input.is_action_just_released("LMBClick"):
 				angle = 0
 				var mouse_pos = get_local_mouse_position().normalized()
-				velocity = Vector2(position.x - mouse_pos.x * power, position.y - mouse_pos.y * power)
+				velocity = -Vector2(position.x - mouse_pos.x * power, position.y - mouse_pos.y * power)
 				set_physics_process(true)
 				change_state.emit(FLYING)
 				State = FLYING
 				
 		FLYING:
-			if(velocity.x + velocity.y == 0):
+			if(velocity.length() == 0):
 				change_state.emit(IDLE)
 				set_physics_process(false)
 				State = IDLE

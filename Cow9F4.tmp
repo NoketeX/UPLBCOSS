@@ -3,9 +3,7 @@
 [ext_resource type="Script" path="res://Cow.gd" id="1_6gyg0"]
 [ext_resource type="Texture2D" uid="uid://dehj1xf58si2p" path="res://aseprite files/Cow.png" id="1_tb2gu"]
 
-[node name="Cow" type="RigidBody2D"]
-max_contacts_reported = 10
-contact_monitor = true
+[node name="CharacterBody2D" type="CharacterBody2D"]
 script = ExtResource("1_6gyg0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

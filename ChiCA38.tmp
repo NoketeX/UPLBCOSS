@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3 uid="uid://bji6qu62wael7"]
+
+[ext_resource type="Script" path="res://Chicken.gd" id="1_g0p2t"]
+[ext_resource type="Texture2D" uid="uid://delt13oetij4a" path="res://aseprite files/Chicken-Sheet.png" id="2_hdynm"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8wetv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eq2uq"]
+atlas = ExtResource("2_hdynm")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ldr5s"]
+atlas = ExtResource("2_hdynm")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6b3tp"]
+atlas = ExtResource("2_hdynm")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sigfg"]
+atlas = ExtResource("2_hdynm")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0ecqh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eq2uq")
+}],
+"loop": true,
+"name": &"bombastic_butt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ldr5s")
+}],
+"loop": true,
+"name": &"bombastic_side_eye",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6b3tp")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sigfg")
+}],
+"loop": true,
+"name": &"side",
+"speed": 5.0
+}]
+
+[node name="Chicken" type="CharacterBody2D"]
+script = ExtResource("1_g0p2t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_8wetv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_0ecqh")
+animation = &"bombastic_butt"
